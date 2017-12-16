@@ -119,6 +119,20 @@ No, we can not apply it directly to our data because the feature map is infinite
 
 \exercise
 
+\begin{align*}
+K(x, y) &= \sumf{i=0}{\infty}{ \phi_{\infty, i}(x) \phi_{\infty, i}(y) } \\
+&= \sumf{i=0}{ \infty }{ \frac{1}{ \sqrt{i!} } e^{ \frac{ -x^2 }{ 2\sigma^2 } } ( \frac{ x }{ \sigma } )^i  \frac{1}{ \sqrt{i!} } e^{ \frac{ -y^2 }{ 2\sigma^2 } } ( \frac{ y }{ \sigma } )^i} \\
+&= \sumf{i=0}{ \infty }{ \frac{1}{ i! } e^{ \frac{ -x^2 -y^2 }{ 2\sigma^2 } } ( \frac{ x y }{ \sigma^2 } )^i } \\
+&= e^{ \frac{ -x^2 -y^2 }{ 2\sigma^2 } } \sumf{i=0}{ \infty }{ \frac{1}{ i! }  ( \frac{ x y }{ \sigma^2 } )^i } \tag{by Taylor series of $e^z$} \\
+&= e^{ \frac{ -x^2 -y^2 }{ 2\sigma^2 } } e^{ \frac{ x y }{ \sigma^2 } } \\
+&= e^{ \frac{ -x^2 -y^2  + 2xy }{ 2\sigma^2 } }  \\
+&= e^{ - \frac{ (x^2 + y^2  - 2xy) }{ 2\sigma^2 } }  \\
+&= e^{ - \frac{ | x - y |^2 }{ 2\sigma^2 } }  \tag{by definition Gaussian Kernel } \\
+&= \tf{\phi(x)} \phi(y)
+\end{align*}
+
+The infinite number of dimensions do not lead to overfitting but rather a poor choice of the Gaussian kernel hyperparameter $\sigma  \ll 1$.
+
 \exercise
 
 \exercise
