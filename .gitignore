@@ -10,3 +10,6 @@ hw07.log
 hw07.aux
 .ipynb_checkpoints/07_homework_svm-2-checkpoint.ipynb
 hw07.tex
+*.aux
+*.log
+*.gz
