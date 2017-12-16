@@ -91,7 +91,14 @@ No, there is no such guarantee. There may be datapoints, which either (1) violat
 
 \exercise
 
+$C < 0$ we have from the Lagrangian of slack variables that $0 \le \alpha_i \le C$ but this obviously does not hold. If $ C = 0$, then we have no penalty term in the optimization problem and from the Lagrangian of slack variables it follows that
+\begin{align*}
+\alpha_i &= - \mu_i \\
+0 \le \alpha_i &= - \mu_i \\
+0 &\le -\mu_i  \tag{violation of dual feasibility of Lagrangian multipliers $\mu_i \ge 0$ }
+\end{align*}
 
+\noindent Thus $C > 0$.
 
 \exercise
 
