@@ -121,4 +121,13 @@ Thus $ K(x,y) = ( \tf{x} y + c)^d $ is a valid kernel.
 
 \exercise
 
+\begin{align*}
+|| x - x^{(s_i)} ||_2 &= \sqrt{\sumf{j = 1}{M}{(x_j - x_j^{(s_i)})^2}} \\
+&= \sumf{j = 1}{M}{(x_j - x_j^{(s_i)})^2} \tag{squared distance does not change k nearest neighbors of $x$} \\
+&= \sumf{j = 1}{M}{(\phi(x_j) - \phi(x_j^{(s_i)}))^2} \tag{ by feature map $\phi(x)$ } \\
+&= \tf{(\phi(x) - \phi(x^{(s_i)}))} (\phi(x) - \phi(x^{(s_i)})) \\
+&= \tf{\phi(x)} \phi(x) - 2 \tf{ \phi(x) }  \phi(x^{(s_i)}) + \tf{ \phi(x^{(s_i)}) }  \phi(x^{(s_i)}) \\
+&= K(x, x)  + K(x^{(s_i)}, x^{(s_i)}) - 2 K(x, x^{(s_i)})
+\end{align*}
+
 \end{document}
