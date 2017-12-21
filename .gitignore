@@ -13,3 +13,4 @@ hw07.tex
 *.aux
 *.log
 *.gz
+.ipynb_checkpoints/07_homework_soft-margin-svm-checkpoint.ipynb
