@@ -81,7 +81,8 @@
 \endgroup
 }
 
-\newcommand{\gradf}[2]{\nabla_{#1}{\partial #2}}
+\newcommand{\gradf}[2]{\frac{\nabla_{#1}}{{\partial #2}}}
+\newcommand{\partialf}[1]{\frac{\partial}{{\partial #1}}}
 
 \begin{document}
 
@@ -90,6 +91,14 @@
 \exercise
 
 \exercise
+
+\begin{align*}
+\partialf{x}(\text{tanh}(x)) &= \partialf{x}(\frac{e^x - e^{-x}}{e^x + e^{-x}}) \\
+&= \frac{ ( e^x + e^{-x} )( e^x + e^{-x}) - ( e^x - e^{-x} )( e^x - e^{-x} )}{ ( e^x + e^{-x} )^2 } \\
+&= 1 - \text{tanh}^2(x)
+\end{align*}
+
+It substantially simplifies the calculations during backpropagation when computing the local gradient at an intermediate node and when passing the gradient to the lower layers.
 
 \exercise
 
