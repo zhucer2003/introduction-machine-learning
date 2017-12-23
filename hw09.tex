@@ -106,9 +106,16 @@ It substantially simplifies the calculations during backpropagation when computi
 
 \exercise
 
+We would stop training approximately at iteration 50, because while the training error keeps decreasing we have an increase in the validation error, which is a sign of overfitting. After we take the weights of the network at this iteration we test it one final time on the test set. Note that we do not get the optimal test error as we would if we would continue with the training until iteration 80.
+
 \exercise
 
 \exercise
+
+\begin{align*}
+\frac{e^{x_i}}{\sumf{i=1}{N}{e^{x_i}}} &= \frac{e^{a}}{e^{a}} \frac{e^{x_i}}{\sumf{i=1}{N}{e^{x_i}}} \\
+&= \frac{e^{x_i - a}}{\sumf{i=1}{N}{e^{x_i - a}}}
+\end{align*}
 
 \exercise
 
