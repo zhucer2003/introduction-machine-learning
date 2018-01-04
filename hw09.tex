@@ -88,6 +88,8 @@
 
 \exercise
 
+
+
 \exercise
 
 \exercise
@@ -101,6 +103,21 @@
 It substantially simplifies the calculations during backpropagation when computing the local gradient at an intermediate node and when passing the gradient to the lower layers.
 
 \exercise
+Some useful facts
+$$\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^x}{1 + e^{x}} $$
+$$\sigma(-x) = 1 - \sigma(x)$$
+$$Ber(y | x ) \sim x^{\frac{1 + y}{2}} (1 - x)^{\frac{1 - y}{2}} \quad \text{for} \quad y = \{-1, 1 \} $$
+
+
+\noindent Transform network output from $0 \leq f(x_i, W) \leq 1$ to $-1 \leq f(x_i, W) \leq 1$
+\begin{align*}
+0 \leq f(x_i, W) \leq 1 &\Leftrightarrow \\
+0 \leq 2f(x_i, W) \leq 2 &\Leftrightarrow  \\
+-1 \leq 2f(x_i, W) - 1 \leq 1 &\Leftrightarrow 
+\end{align*}
+
+\noindent \textbf{Goal:} Modified binary cross-entropy loss should be: $E(W) = - \sumf{i=1}{N}{(\text{ln}(1 + e^{(-y_i f(x_i, W))}))}$.
+
 
 \exercise
 
@@ -118,5 +135,21 @@ We would stop training approximately at iteration 50, because while the training
 \end{align*}
 
 \exercise
+
+The binary cross-entropy is equivalent to
+
+\begin{align*}
+-[y \text{log}(\sigma(x)) + (1 - y) \text{log}(1 - \sigma(x)) ] &= -[y \text{log}(\frac{e^x}{1 + e^x}) + (1 - y) \text{log}(1 - \frac{e^x}{1 + e^x}) ] \\
+&= -[ y \text{log}e^x -y \text{log}(1 + e^x) + (1 - y)( -\text{log}(1 + e^x ))] \\
+&= -[yx - \text{log}(1 + e^x )] \\
+&= -yx + \text{log}(1 + e^x ) \\
+&= -yx + \text{log}(e^x(e^{-x} + 1 )) \\
+&= x -yx + \text{log}( 1 + e^{-x} ) \\
+&= \text{max}(x,0) -yx + \text{log}( 1 + e^{-|x|} ) \tag{see below}
+\end{align*}
+
+\noindent The binary cross-entropy and in general any well-defined loss function should satisfy the following properties : For correctly classified datapoints we want to have zero loss and for incorrectly classified points, we want to have a large loss. This can be easily verified for the binary cross-entropy, e.g. if x is a large positive score and y = 0, i.e. x is missclassified then we get a large loss value, contrary if y = 1 we get zero loss, as expected. Our stable binary cross-entropy should also satisfy this properties.
+\\
+\noindent For $x \rightarrow -\infty$ we get an overflow  when implementing it on computers. To overcome this issue, we can map any negative x to a positive value using the $\text{abs}(\cdot)$ function. To ensure that for missclassified datapoints we penalize with a non-zero loss we have to add the term $\text{max}(x, 0)$ to the loss function (Note that in the casse of correctly missclassified datapoints this term either is zero or cancels out with $yx$, which ensures zero loss).
 
 \end{document}
