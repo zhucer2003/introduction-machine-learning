@@ -128,6 +128,14 @@ We would stop training approximately at iteration 50, because while the training
 
 \exercise
 
+\begin{align*}
+y &= \text{log}(\sumf{i=1}{N}{ e^{x_i} }) \\
+&= \text{log}(\sumf{i=1}{N}{ \frac{e^a}{e^a} e^{x_i} }) \\
+&= \text{log}(e^a \sumf{i=1}{N}{e^{-a} e^{x_i} }) \\
+&= \text{log}(e^a) + \text{log}(\sumf{i=1}{N}{e^{-a} e^{x_i} }) \\
+&= a + \text{log}(\sumf{i=1}{N}{e^{x_i - a} })
+\end{align*}
+
 \exercise
 
 \begin{align*}
