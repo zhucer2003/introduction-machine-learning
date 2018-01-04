@@ -103,21 +103,22 @@
 It substantially simplifies the calculations during backpropagation when computing the local gradient at an intermediate node and when passing the gradient to the lower layers.
 
 \exercise
-Some useful facts
-$$\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^x}{1 + e^{x}} $$
-$$\sigma(-x) = 1 - \sigma(x)$$
-$$Ber(y | x ) \sim x^{\frac{1 + y}{2}} (1 - x)^{\frac{1 - y}{2}} \quad \text{for} \quad y = \{-1, 1 \} $$
 
+For deriving the new loss function under the specified requirements, we follow a similar approach as to the derivation in the case of using sigmoid (cf. Lecture Linear Classification, slide 28). We use $ \text{tanh}( \cdot ) $ instead of $\sigma( \cdot )$. However to be able to still interpret the output as probabilities and define it as a Bernoulli experiment we need to rescale it to be in $[0, 1]$.
 
-\noindent Transform network output from $0 \leq f(x_i, W) \leq 1$ to $-1 \leq f(x_i, W) \leq 1$
 \begin{align*}
-0 \leq f(x_i, W) \leq 1 &\Leftrightarrow \\
-0 \leq 2f(x_i, W) \leq 2 &\Leftrightarrow  \\
--1 \leq 2f(x_i, W) - 1 \leq 1 &\Leftrightarrow 
+p( y = 1 | x) &=\frac{\text{tanh}(x) + 1}{2}, \quad y = 1 \\
+p( y = -1 | x) &=1 - \frac{\text{tanh}(x) + 1}{2}, \quad y = -1
+\end{align*}
+or more compactly (and useful later) as:
+$x^{\frac{1 + y}{2}} \cdot (1 - x)^{\frac{1 - y}{2}}$
+
+\begin{align*}
+E(W) &= -\sumf{i = 1}{N}{ \frac{1 + y}{2} \text{log}(\frac{\text{tanh}(x_i, W) + 1}{2}) + \frac{1 - y}{2} \text{log}(1 - \frac{\text{tanh}(x_i, W) + 1}{2})} \\
+&= -\sumf{i = 1}{N}{ \frac{1 + y}{2} \text{log}(\frac{f(x_i, W) + 1}{2}) + \frac{1 - y}{2} \text{log}(1 - \frac{f(x_i, W) + 1}{2})}
 \end{align*}
 
-\noindent \textbf{Goal:} Modified binary cross-entropy loss should be: $E(W) = - \sumf{i=1}{N}{(\text{ln}(1 + e^{(-y_i f(x_i, W))}))}$.
-
+Clearly the loss is zero for correctly classified datapoints and large for missclassified datapoints. Furthermore an output of $\text{tanh}(x), x \rightarrow -1$ and  $\text{tanh}(x), x \rightarrow 1$ is transformed to a low (probability) value respectively high value. By construction the activation function to be chosen is $\text{tanh}(\cdot)$
 
 \exercise
 
