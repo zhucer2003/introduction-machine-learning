@@ -99,18 +99,16 @@ A neural network uses a hierarchical feature representation of the input space a
 &= \sigma(2x) - \sigma(-2x) \\
 &= \sigma(2x) - (1 - \sigma(2x)) \\
 &= \sigma(2x) - 1 + \sigma(2x) \\
-&= 2\sigma(2x) - 1 \tag{2.1}
+&= 2\sigma(2x) - 1
 \end{align*}
 
-\noindent W.l.o.g. assume one hidden layer neural network function $f(x, W)$ with $\text{tanh}(\cdot)$ activation function and identity function for output layer.
-Furthermore $X \in \mathbb{R}^{D+1}, W_1 \in \mathbb{R}^{1 \times {(M+1)}}, W_0 \in \mathbb{R}^{(D+1) \times (M+1)}$.
+It immediately follows that
 
 \begin{align*}
-f(x, W) &= \tf{W_1} \text{tanh}(\tf{W_0} X) \\
-&= \tf{2W_1} \sigma(\tf{2W_0} X) - 1 \tag{by 2.1} \\
-&= \tf{W_1^\prime} \sigma(\tf{W_0^\prime} X) - 1 \tag{$\tf{W_1^\prime} = 2W_1, \tf{W_0^\prime} = 2W_0$} \\
-&= \tf{W_1^\prime} \sigma(\tf{W_0^\prime} X) \tag{by absorbing the constant "-1" in $W_1^\prime$ similar to absorbing the bias} \\
+\sigma(x) &= \frac{\text{tanh}(\frac{x}{2}) + 1}{2} \tag{2.1}
 \end{align*}
+
+\noindent By (2.1), if we take all the \textit{input} hidden-layer weights $\sigma$ multiply them by $\frac{1}{2}$ and scale the all \textit{output} hidden-layer weights by $\frac{1}{2}$ and add $\frac{1}{2}$ to their bias we get the exact same neural network function output using $\text{tanh}$ activation functions for the hidden layer.
 
 \exercise
 
