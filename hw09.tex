@@ -185,15 +185,13 @@ y &= \text{log}(\sumf{i=1}{N}{ e^{x_i} }) \\
 -[y \text{log}(\sigma(x)) + (1 - y) \text{log}(1 - \sigma(x)) ] &= -[y \text{log}(\frac{e^x}{1 + e^x}) + (1 - y) \text{log}(1 - \frac{e^x}{1 + e^x}) ] \\
 &= -[ y \text{log}e^x -y \text{log}(1 + e^x) + (1 - y)( -\text{log}(1 + e^x ))] \\
 &= -[yx - \text{log}(1 + e^x )] \\
-&= -yx + \text{log}(1 + e^x ) \\
+&= -yx + \text{log}(1 + e^x ) \tag{9.1} \\
 &= -yx + \text{log}(e^x(e^{-x} + 1 )) \\
 &= \text{log}(e^x) -yx +  \text{log}(e^{-x} + 1 ) \\
-&= x -yx + \text{log}( 1 + e^{-x} ) \\
-&= \text{max}(x,0) -yx + \text{log}( 1 + e^{-|x|} ) \tag{see below}
+&= x -yx + \text{log}( 1 + e^{-x} ) \tag{9.2} \\
+&= \text{max}(x,0) -yx + \text{log}( 1 + e^{-|x|} ) \tag{9.3}
 \end{align*}
 
-\noindent The binary cross-entropy and in general any well-defined loss function must satisfy the following properties : For correctly classified datapoints the loss is zero and for incorrectly classified points it is non-negative. This can be easily verified for the binary cross-entropy, e.g. if x is a large positive score and y = 0, i.e. x is missclassified then we get a non-negative contribution to the loss, conversely if y = 1 then the loss is zero. The stable binary cross-entropy must also satisfy this properties.
-\\
-\noindent For $x \rightarrow -\infty$ we get an overflow  when implementing it on a computing machine. To overcome this issue, we can map any negative x to a positive value using the $\text{abs}(\cdot)$ function. To ensure that missclassified datapoints contribute with a non-negative value to the loss we have to add the term $\text{max}(x, 0)$ (In case of correctly classified datapoints this term either is zero or cancels out with $yx$) to the loss function.
+\noindent If $x > 0$, then (9.3) follows immediately by (9.2) else if $x < 0$ then plugging it in (9.1) we also immediately get (9.3).
 
 \end{document}
