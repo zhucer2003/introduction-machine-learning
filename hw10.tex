@@ -88,6 +88,19 @@
 
 \exercise
 
+To enforce the necessary constraints, we introduce the Lagrangian multipliers $\lambda_{1}, ..., \lambda_{M}, \lambda_{M+1}$ and make an unconstrained maximization of 
+
+$$L = \tf{\mathbf{u}_{M+1}} \mathbf{S} \mathbf{u}_{M+1}  + \lambda_{M+1}(1 - \tf{\mathbf{u}_{M+1}} \mathbf{u}_{M+1}) + \sumf{i=1}{M}{\lambda_i (\tf{\mathbf{u}_{M+1}} \mathbf{u}_{i} )}$$
+
+\noindent Now we take the derivative of L with respect to a vector $\mathbf{u}_{M+1}$ and set it to zero
+\begin{align*}
+\partialf{\mathbf{u}_{M+1}} L = 0 &\Leftrightarrow 2 \mathbf{S} \mathbf{u}_{M+1} = 2 \lambda_{M+1} \mathbf{u}_{M+1} - \sumf{i=1}{M}{\lambda_i \mathbf{u}_{i}} \\
+&\Leftrightarrow 2 \tf{\mathbf{u}_{M+1}} \mathbf{S} \mathbf{u}_{M+1} = 2 \lambda_{M+1} \tf{\mathbf{u}_{M+1}} \mathbf{u}_{M+1} - \sumf{i=1}{M}{\lambda_i \tf{\mathbf{u}_{M+1}} \mathbf{u}_{i}} \tag{left-multiply by $\tf{\mathbf{u}_{M+1}}$} \\
+&\Leftrightarrow \tf{\mathbf{u}_{M+1}} \mathbf{S} \mathbf{u}_{M+1} = \lambda_{M+1} \tag{by orthonormality of $u_i$ and $\mathbf{u}_{M+1}$} \\
+\end{align*}
+
+\noindent  By induction step, we see that the variance in direction $\mathbf{u}_{M+1}$  is maximum when we set $\mathbf{u}_{M+1}$ equal to the eigenvector having the $(m+1)^{\text{th}}$ largest eigenvalue $\lambda_{M+1}$.
+
 \exercise
 
 \exercise
