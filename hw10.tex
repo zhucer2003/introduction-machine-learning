@@ -120,8 +120,8 @@ $$L = \tf{\mathbf{u}_{M+1}} \mathbf{S} \mathbf{u}_{M+1}  + \lambda_{M+1}(1 - \tf
 \mathbf{\Phi_y} &= \mathbf{E}[ (\mathbf{y} - \mathbf{\mu_y}) \tf{(\mathbf{y} - \mathbf{\mu_y})} ] \\
 &= \mathbf{E}[ ( \mathbf{A} \mathbf{x} - \mathbf{A} \mathbf{\mu_x} ) \tf{( \mathbf{A} \mathbf{x} - \mathbf{A} \mathbf{\mu_x} ) } ] \\
 &= \mathbf{E}[ ( \mathbf{A} (\mathbf{x} - \mathbf{\mu_x}) ) \tf{( \mathbf{A} (\mathbf{x} - \mathbf{\mu_x}) ) } ] \\
-&= \mathbf{A} \mathbf{E}[ ( \mathbf{x} - \mathbf{\mu_x} ) \tf{( \mathbf{x} - \mathbf{\mu_x} ) } ] \mathbf{A} \\
-&= \mathbf{A} \mathbf{\Phi_x} \mathbf{A} \\
+&= \mathbf{A} \mathbf{E}[ ( \mathbf{x} - \mathbf{\mu_x} ) \tf{( \mathbf{x} - \mathbf{\mu_x} ) } ] \tf{\mathbf{A}} \\
+&= \mathbf{A} \mathbf{\Phi_x} \tf{\mathbf{A}} \\
 \end{align*}
 
 \noindent By pattern matching we have for the transformed Maximum Likelihood estimates
