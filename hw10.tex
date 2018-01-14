@@ -104,32 +104,39 @@ $$L = \tf{\mathbf{u}_{M+1}} \mathbf{S} \mathbf{u}_{M+1}  + \lambda_{M+1}(1 - \tf
 \exercise
 
 \begin{align*}
-\mathbf{x_i} &\sim \mathcal{N}(\mathbf{\mu_x}, \mathbf{\Sigma_x}) \tag{$\mathbf{\mu_x} = \mathbf{\mu}$, $\mathbf{\Sigma_x} = \mathbf{W} \tf{\mathbf{W}} + \sigma^2 \mathbf{I}$}
+\mathbf{x_i} &\sim \mathcal{N}(\mathbf{\mu_x}, \mathbf{\Phi_x}) \tag{$\mathbf{\mu_x} = \mathbf{\mu}$, $\mathbf{\Phi_x} = \mathbf{W} \tf{\mathbf{W}} + \Phi^2 \mathbf{I}$}
 \end{align*}
 
-\noindent From lecture we know that $\mathbf{y_i} = \mathbf{A} \mathbf{x_i} \sim \mathcal{N}(\mathbf{\mu_y}, \mathbf{\Sigma_y}) $. Let's first derive the two moments
+\noindent From lecture we know that $\mathbf{y_i} = \mathbf{A} \mathbf{x_i} \sim \mathcal{N}(\mathbf{\mu_y}, \mathbf{\Phi_y}) $. Let's first derive the two moments
 
 \begin{align*}
 \mathbf{\mu_y} &= \mathbf{E}[y] \\
-&= \mathbf{E}[\mathbf{A} \mathbf{x_i}] \\
-&= \mathbf{A} \mathbf{E}[\mathbf{x_i}] \\
+&= \mathbf{E}[\mathbf{A} \mathbf{x}] \\
+&= \mathbf{A} \mathbf{E}[\mathbf{x}] \\
 &= \mathbf{A} \mathbf{\mu_x}
 \end{align*}
 
 \begin{align*}
-\mathbf{\Sigma_y} &= \mathbf{E}[ (\mathbf{y} - \mathbf{\mu_y}) \tf{(\mathbf{y} - \mathbf{\mu_y})} ] \\
+\mathbf{\Phi_y} &= \mathbf{E}[ (\mathbf{y} - \mathbf{\mu_y}) \tf{(\mathbf{y} - \mathbf{\mu_y})} ] \\
 &= \mathbf{E}[ ( \mathbf{A} \mathbf{x} - \mathbf{A} \mathbf{\mu_x} ) \tf{( \mathbf{A} \mathbf{x} - \mathbf{A} \mathbf{\mu_x} ) } ] \\
 &= \mathbf{E}[ ( \mathbf{A} (\mathbf{x} - \mathbf{\mu_x}) ) \tf{( \mathbf{A} (\mathbf{x} - \mathbf{\mu_x}) ) } ] \\
 &= \mathbf{A} \mathbf{E}[ ( \mathbf{x} - \mathbf{\mu_x} ) \tf{( \mathbf{x} - \mathbf{\mu_x} ) } ] \mathbf{A} \\
-&= \mathbf{A} \mathbf{\Sigma_x} \mathbf{A} \\
+&= \mathbf{A} \mathbf{\Phi_x} \mathbf{A} \\
 \end{align*}
 
-By pattern matching we have for the transformed Maximum Likelihood estimates
+\noindent By pattern matching we have for the transformed Maximum Likelihood estimates
 
 \begin{align*}
 \mathbf{\mu}_{y_{ML}} &= \mathbf{A} \mathbf{\mu}_{ML} \\
-\mathbf{\Sigma}_{y_{ML}} &= \mathbf{A} \mathbf{\Sigma}_{ML} \tf{\mathbf{A}} \\
+\mathbf{\Phi}_{y_{ML}} &= \mathbf{A} \mathbf{\Phi}_{ML} \tf{\mathbf{A}} \\
 \mathbf{W}_{y_{ML}} &= \mathbf{A} \mathbf{W}_{ML}
+\end{align*}
+
+\noindent By orthogonality $ \mathbf{A} \tf{\mathbf{A}} = \tf{\mathbf{A}} \mathbf{A} = \mathbf{I}$ and $ \mathbf{\Phi} = \sigma^2  \mathbf{I}$ we have
+\begin{align*}
+\mathbf{A} \mathbf{\Phi} \tf{\mathbf{A}} &= \mathbf{A} \sigma^2  \mathbf{I} \tf{\mathbf{A}} \\
+&= \sigma^2 \mathbf{A} \tf{\mathbf{A}} \\
+&= \sigma^2 \mathbf{I}
 \end{align*}
 
 \exercise
@@ -137,12 +144,12 @@ By pattern matching we have for the transformed Maximum Likelihood estimates
 Let $\mathbf{x} \in \mathbb{R}^5$ hold the movie ratings given by Leslie.
 \\
 \noindent By the SVD projection in concept space we have
-$$\mathbf{v}  \cdot \mathbf{x} = \tf{[1.74, 2.84]}$$
+$$\mathbf{V}  \cdot \mathbf{x} = \tf{[1.74, 2.84]}$$
 \\
 \noindent By SVD decomposition and reconstruction of the input using the projected space we have
-$$ \tf{[1.74, 2.84]} \cdot \tf{\mathbf{v}} = \tf{[1.0092, 1.0092, 1.0092, 2.0164, 2.0164]} $$
+$$ \tf{[1.74, 2.84]} \cdot \tf{\mathbf{V}} = \tf{[1.0092, 1.0092, 1.0092, 2.0164, 2.0164]} $$
 
-\noindent E.g. we can predict Leslie to rate Titanic movie with 2.0164.
+\noindent E.g. we can predict that Leslie will rate Titanic movie with 2.0164.
 
 \exercise
 
