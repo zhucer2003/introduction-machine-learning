@@ -89,10 +89,17 @@
 \exercise
 
 \begin{align*}
-\E[x] &= \intf{}{}{x \cdot \sumf{k}{}{\pi_k \mathcal{N}(x | \mu_k, \Sigma_k)} }{x} \\
-&= \sumf{k}{}{ \intf{}{}{\pi_k \mathcal{N}(x | \mu_k, \Sigma_k)}{x}} \\
-&= \sumf{k}{}{ \pi_k \intf{}{}{ \mathcal{N}(x | \mu_k, \Sigma_k)}{x}} \\
-&= \sumf{k}{}{ \pi_k \mu_k }
+\E[x] &= \intf{-\infty}{\infty}{x \cdot \sumf{k}{}{\pi_k \mathcal{N}(x | \mu_k, \Sigma_k)} }{x} \\
+&= \sumf{k}{}{ \intf{-\infty}{\infty}{\pi_k \mathcal{N}(x | \mu_k, \Sigma_k)}{x}} \\
+&= \sumf{k}{}{ \pi_k \intf{-\infty}{\infty}{ \mathcal{N}(x | \mu_k, \Sigma_k)}{x}} \\
+&= \sumf{k}{}{ \pi_k \mu_k } = \mu \tag{1.1}
+\end{align*}
+
+\begin{align*}
+\text{Cov}[x] &= \E[x \tf{x}] - \E[x] \tf{\E[x]} \\
+&= \E[x \tf{x}] - \mu \tf{\mu} \tag{by 1.1} \\
+&= \mu \tf{\mu} + \Sigma_k - \mu \tf{\mu} \tag{by Bishop 2.62} \\
+&= \Sigma_k \\
 \end{align*}
 
 \exercise
