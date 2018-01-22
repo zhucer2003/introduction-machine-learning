@@ -76,7 +76,7 @@
 \begingroup
 \begin{cases}
   {#1} \text{, if {#2}} \\
-  {#3} \text{, if {#4}}
+  {#3} \text{, {#4}}
 \end{cases}
 \endgroup
 }
@@ -98,12 +98,44 @@
 \begin{align*}
 \text{Cov}[x] &= \E[x \tf{x}] - \E[x] \tf{\E[x]} \\
 &= \E[x \tf{x}] - \mu \tf{\mu} \tag{by 1.1} \\
-&= \mu \tf{\mu} + \Sigma_k - \mu \tf{\mu} \tag{by Bishop 2.62} \\
-&= \Sigma_k \\
+&= \mu \tf{\mu} + \sumf{k}{}{\Sigma_k} - \mu \tf{\mu} \tag{by Bishop 2.62} \\
+&= \sumf{k}{}{\Sigma_k} = \Sigma \\
 \end{align*}
 
 \exercise
 
+Given $\Sigma_k = \sigma^2 I, \sigma^2 \rightarrow 0$, we have for the exponential in $\mathcal{N}( \cdot, \cdot )$
+
+\begin{align*}
+e^{-\frac{1}{2} \tf{ (x_i - \mu_k) } (\sigma^2 I)^{-1} (x_i - \mu_k)} &= e^{-\frac{1}{2 \sigma^2} \tf{ (x_i - \mu_k) } (x_i - \mu_k)} \rightarrow 0 \tag{ $\sigma^2 \rightarrow 0$}
+\end{align*}
+
+\noindent \textbf{E-Step}
+
+\begin{align*}
+\gamma(z_{ik}) = \frac{ \pi_k \mathcal{N}( x_i | \mu_k, \Sigma_k ) }{ \pi_j \mathcal{N}( x_i | \mu_j, \Sigma_j ) }
+\end{align*}
+
+\noindent It's important to notice that if a datapoint lies far away from a centroid, i.e. $x_i - \mu_k >> 0$ then the exponential term associated to this Gaussian goes much faster to zero than the other ones. Thus for a datapoint $x_i$ we have
+
+\begin{align*}
+\gamma(z_{ik})  &= \ifelse{1}{$ \text{argmin}_k \quad || x_i - \mu_k ||_2 $}{0}{\text{else}} \tag{2.1}
+\end{align*}
+
+\noindent \textbf{M-Step}
+
+\noindent Thus the estimates $\mu_k^{\text{new}}, \Sigma_k^{\text{new}}, \pi_k^{\text{new}} $ (cf. slide 29, lecture) become
+
+\begin{align*}
+\mu_k^{\text{new}} &= \frac{1}{N_k} \sumf{i}{N}{z_{ik} x_i} \\
+\Sigma_k^{\text{new}} &= \sigma^2 I \tag{by 2.1 this parameter stays the same as initialized in the beginning} \\
+\pi_k^{\text{new}} &= \frac{N_k}{N}, N_k = \sumf{i}{N}{z_{ik}}
+\end{align*}
+
+\noindent Thus we see in the case $\Sigma_k = \sigma^2 I, \sigma^2 \rightarrow 0$, the EM-Algorithm is equivalent to Lloyd's algorithm.
+
 \exercise
+
+See below.
 
 \end{document}
