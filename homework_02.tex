@@ -1,0 +1,219 @@
+    \documentclass[11pt]{article}
+
+% ------------------------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% ------------------------------------------------------------------------------
+
+\usepackage[margin=.8in,top=1.1in,bottom=1.1in]{geometry} % page layout
+\usepackage{amsmath,amsthm,amssymb,amsfonts} % math things
+\usepackage{graphicx} % include graphics
+\usepackage{fancyhdr} % header customization
+\usepackage{titlesec} % help with section naming
+\usepackage{listings}% display source code
+\usepackage{color}
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+% naming sections
+\titleformat{\section}{\bf}{Problem \thesection}{0.5em}{}
+\newcommand{\exercise}{\section{}}
+
+% headers
+\pagestyle{fancy}
+\fancyhf{} % clear all
+\fancyhead[L]{\sffamily\small Machine Learning I --- Homework}
+\fancyhead[R]{\sffamily\small Page \thepage}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\footrulewidth}{0.2pt}
+\markright{\hrulefill\quad}
+
+\newcommand{\hwhead}[4]{
+\begin{center}
+\sffamily\large\bfseries Machine Learning I Worksheet #2
+\vspace{2mm}
+\normalfont
+
+#2\\
+#3\\
+\texttt{#4}
+\end{center}
+\vspace{6mm} \hrule \vspace{4mm}
+}
+
+%%
+\DeclareMathOperator{\E}{\mathbb{E}}
+\newcommand{\intf}[4]{\int_{#1}^{#2} \! #3 \, \mathrm{d}#4}
+\newcommand{\sumf}[3]{\sum_{#1}^{#2} #3}
+
+
+\begin{document}
+
+\exercise
+
+We define the random variables S ("Scanner") and T ("Terrorist") as follows
+\begin{align*}
+S(\text{'person is predicted as terrorist'}) &= 1 \\
+S(\text{'person is predicted as not terrorist'}) &= 0 \\
+\\
+T(\text{'person is an actual terrorist'}) &= 1 \\
+T(\text{'person is not an actual terrorist'}) &= 0
+\end{align*}
+
+\noindent By problem statement we have
+\begin{align*}
+P(T = 1) &= 0.01 \Rightarrow P(T = 0) = 0.99 \\
+P(S = 1 | T = 1) &= 0.95 \Rightarrow P(S = 0 | T = 1) = 0.05 \\
+P(S = 0 | T = 0) &= 0.95 \Rightarrow P(S = 1 | T = 0) = 0.05 \\
+\end{align*}
+\textbf{Goal}: Find $P(T = 1 | S = 1)$. \\
+\textbf{Solution}.
+\begin{align*}
+P(T = 1 | S = 1) &= \frac{P(S=1 | T=1) \cdot P(T = 1)}{P(S = 1)} \tag{by Bayes' Theorem} \\
+&= \frac{P(S=1 | T=1) \cdot P(T=1)}{P(S=1 | T=1) \cdot P(T=1) + P(S=1 | T=0) \cdot P(T = 0)} \tag{by Law of Total Probability} \\
+&= \frac{0.95 \cdot 0.01}{0.95 \cdot 0.01 + 0.05 \cdot 0.99 } \\
+&= 0.16
+\end{align*}
+
+
+\exercise
+
+Let $\Omega = \{w, r\}$. Let's define all possible events of putting two balls in the basket. 
+
+\begin{align*}
+P(\text{"rr"}) = P(\text{"wr"}) = P(\text{"rw"}) = P(\text{"ww"}) = \frac{1}{4}
+\end{align*}
+
+\noindent  Let's define also $\Omega' = \{W, R\}$ and let "RRR" be the event of drawing three red balls from the basket. \\
+\textbf{Goal}: Find $P( "rr" | "RRR")$. \\
+\textbf{Solution}.
+\begin{align*}
+P("rr" | "RRR") &= \frac{P("RRR" | "rr" ) \cdot P("rr")}{P("RRR")} \tag{by Bayes' Theorem} \\
+&= \frac{1 \cdot 1/4}{1 \cdot 1/4 + 1/8 \cdot 1/4 + 1/8 \cdot 1/4 + 0 \cdot 1/4} \tag{by Law of Total Probability} \\
+&= 0.8
+\end{align*}
+
+\exercise
+
+%\omega_i = \text{"Coin is tossed i times, where first i-1 are T (Tails) and ith is H (Heads)"}$$.
+
+\begin{equation*}
+X(\text{X=x)} = \begin{cases}
+  1 \text{, if x = "H"} \\
+  0 \text{, if x = "T"}
+\end{cases}
+\end{equation*}
+
+$$Y(Y=y_i) = i \text{, if} \quad y_i \text{="Coin X is tossed i times, where the first i-1 are T and the i-th is H"}.$$
+
+\noindent \textbf{Solution}.
+
+\begin{align*}
+\E_Y[X=1] &= 1 \tag{by problem statement}
+\end{align*}
+
+\begin{align*}
+\E_Y[X=0] &= \sum_{i=0}^{\infty} \cdot (\frac{1}{2})^i \cdot \frac{1}{2} \tag{by expectation definition} \\
+&= \frac{1}{2} \cdot \sum_{i=0}^{\infty} \cdot (\frac{1}{2})^i \\
+&= \frac{1}{2} \cdot \frac{1}{1 - \frac{1}{2}} \tag{by geometric series definition} \\
+&= 1
+\end{align*}
+
+\exercise
+
+\textbf{Goal}: Compute $\E[X], Var[X]$. \\
+\noindent \textbf{Solution}.
+\begin{align*}
+\E[X] &= \intf{-\infty}{\infty}{x \cdot p(x)}{x} \tag{by definition expectation of continous random variable} \\
+&= \intf{a}{b}{x \cdot p(x)}{x} \tag{by definition p(x) is zero outside these boundaries} \\
+&= \frac{1}{b-a} \intf{a}{b}{x}{x} \\
+&= \frac{1}{b-a} \left[\frac{x^2}{2} \right]_a^b \\
+&= \frac{1}{b-a} \cdot \frac{b^2 - a^2}{2} \\
+&= \frac{a+b}{2}
+\end{align*}
+
+\begin{align*}
+Var[X] &= \E[X^2] - \E[X]^2  \tag{by definition variance of continous random variable} \\
+&= \E[X^2] - (\frac{a+b}{2})^2 \\
+&= \intf{-\infty}{\infty}{x^2 \cdot p(x)}{x} - (\frac{a+b}{2})^2 \\
+&= \intf{a}{b}{x^2 \cdot p(x)}{x} - (\frac{a+b}{2})^2 \tag{by definition p(x) is zero outside these boundaries} \\
+&= \frac{1}{b-a} \intf{a}{b}{x^2}{x} - (\frac{a+b}{2})^2 \\
+&= \frac{1}{b-a} \left[\frac{x^3}{3} \right]_a^b - (\frac{a+b}{2})^2 \\
+&= \frac{1}{b-a} \cdot \frac{b^3 - a^3}{3} - (\frac{a+b}{2})^2 \\
+&= \frac{b^2 + ab + a^2}{3} - (\frac{a+b}{2})^2 \tag{by difference of cubes} \\
+&= \frac{b^2 - 2ab + a^2}{12} \\
+&= \frac{(a-b)^2}{12}
+\end{align*}
+
+\exercise
+
+\textbf{Goal}: Prove 
+\begin{align*}
+\E[X] &= \E_Y[\E_{X|Y}[X]] \\
+Var[X] &= \E_Y[Var_{X|Y}[X]] + Var_{Y}[E_{X|Y}[X]]
+\end{align*}
+
+\noindent \textbf{Solution}.
+For simplicity, we prove for the discrete case however going to continous case requires only the use of integrals instead of sums.
+
+\begin{align*}
+\E_Y[\E_{X|Y}[X]] &= \sumf{y}{}{p(y) \cdot \E_{X|Y}[X]} \\
+&= \sumf{y}{}{p(y) \cdot (\sumf{x}{}{x \cdot p(x|y)})} \\
+&= \sumf{y}{}{\sumf{x}{}{x \cdot p(x|y) \cdot p(y)}} \\
+&= \sumf{y}{}{\sumf{x}{}{x \cdot p(x,y)}} \\
+&= \sumf{x}{}{\sumf{y}{}{x \cdot p(x,y)}} \\
+&= \sumf{x}{}{x \sumf{y}{}{p(x,y)}} \\
+&= \sumf{x}{}{x \cdot p(x)} \\
+&= \E[X]
+\end{align*}
+
+\begin{align*}
+\E_Y[Var_{X|Y}[X]] + Var_{Y}[E_{X|Y}[X]] &= \E_Y[\E_{X|Y}[X^2] - (E_{X|Y}[X])^2] + \E_Y[(E_{X|Y}[X])^2] - (\E_Y[E_{X|Y}[X]])^2  \\
+&= \E_Y[\E_{X|Y}[X^2]] - E_Y[(E_{X|Y}[X])^2] + \E_Y[(E_{X|Y}[X])^2] - (\E_Y[E_{X|Y}[X]])^2 \\
+&= \E_Y[\E_{X|Y}[X^2]] - (\E_Y[E_{X|Y}[X]])^2 \\
+&= \E[X^2] - (\E[X])^2 \tag{by first proof} \\
+&= Var[X]
+\end{align*}
+
+\exercise
+
+\textbf{Goal}: Prove $p(|\frac{1}{n} \sumf{i=1}{n}{X_i - \E[X_i]}| > \epsilon) \rightarrow 0$. \\
+\noindent \textbf{Solution}.
+
+\noindent Let $X = \frac{1}{n} \sumf{i=1}{n}{X_i}$.
+\begin{align*}
+p(|\frac{1}{n} \sumf{i=1}{n}{X_i - \E[X_i]}| > \epsilon)  &= p(| X - \frac{1}{n} \sumf{i=1}{n}{\E[X_i]}| > \epsilon) \tag{linearity of expectation} \\
+&= p(| X - \E[\frac{1}{n} \sumf{i=1}{n}{X_i]}| > \epsilon) \tag{by substitution} \\
+&= p(| X - \E[X| > \epsilon) \tag{by Chebyshev inequality} \\
+&\le \frac{Var(X)}{\epsilon^2} \tag{by linearity of variance under i.i.d assumption} \\
+&= \frac{\frac{1}{n^2} \sumf{i=1}{n}{Var(X_i)}}{\epsilon^2} \tag{$X_i$ have same variance  $\sigma^2$} \\
+&= \frac{\sigma^2}{\epsilon^2 n} \rightarrow 0 \tag{$n \rightarrow \infty$}
+\end{align*}
+
+\end{document}

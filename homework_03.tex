@@ -1,0 +1,157 @@
+    \documentclass[11pt]{article}
+
+% ------------------------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% ------------------------------------------------------------------------------
+
+\usepackage[margin=.8in,top=1.1in,bottom=1.1in]{geometry} % page layout
+\usepackage{amsmath,amsthm,amssymb,amsfonts} % math things
+\usepackage{graphicx} % include graphics
+\usepackage{fancyhdr} % header customization
+\usepackage{titlesec} % help with section naming
+\usepackage{listings}% display source code
+\usepackage{color}
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+% naming sections
+\titleformat{\section}{\bf}{Problem \thesection}{0.5em}{}
+\newcommand{\exercise}{\section{}}
+
+% headers
+\pagestyle{fancy}
+\fancyhf{} % clear all
+\fancyhead[L]{\sffamily\small Machine Learning I --- Homework}
+\fancyhead[R]{\sffamily\small Page \thepage}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\footrulewidth}{0.2pt}
+\markright{\hrulefill\quad}
+
+\newcommand{\hwhead}[4]{
+\begin{center}
+\sffamily\large\bfseries Machine Learning I Worksheet #3
+\vspace{2mm}
+\normalfont
+
+#2\\
+#3\\
+\texttt{#4}
+\end{center}
+\vspace{6mm} \hrule \vspace{4mm}
+}
+
+%%
+\DeclareMathOperator{\E}{\mathbb{E}}
+\newcommand{\intf}[4]{\int_{#1}^{#2} \! #3 \, \mathrm{d}#4}
+\newcommand{\sumf}[3]{\sum_{#1}^{#2} #3}
+\newcommand{\prodf}[3]{\prod_{#1}^{#2} #3}
+
+
+\begin{document}
+
+\exercise
+
+Let $ f(\theta; t, h) = \theta^t (1 - \theta)^h $.
+\begin{align*}
+f'(\theta) &= t \theta^{t-1} \cdot (1 - \theta)^{h} + \theta^t h \cdot (1 - \theta)^{h - 1} \\
+&= f(\theta; t-1, h-1) \cdot (t (1 - \theta) + \theta h) \\
+f''(\theta) &= (t (1 - \theta) + \theta h) \cdot f'(\theta, t-1, h-1) + f(\theta; t-1, h-1) \cdot (h - t)
+\end{align*}
+
+\noindent Let $ f(\theta; t, h) = log(\theta^t (1 - \theta)^h) = t \cdot log(\theta) + h \cdot log(1 - \theta)$.
+
+\begin{align*}
+f'(\theta) &= t \frac{1}{\theta} + h \frac{1}{(1 - \theta)} \\
+f''(\theta) &= h \frac{1}{(1 - \theta)^2} - t \frac{1}{\theta^2}
+\end{align*}
+
+\exercise
+
+W.l.o.g, we can consider the natural logarithm. Let $\theta^*  = \mathrm{argmax}_\theta  \mathrm{ln}f(\theta)$. Because $\theta^*$ is a local maximizer we have
+\begin{align*}
+\mathrm{ln}f(\theta - \epsilon) < \mathrm{ln}f(\theta^*) > \mathrm{ln}f(\theta + \epsilon) \\
+f(\theta - \epsilon) < f(\theta^*) > f(\theta + \epsilon) \tag{by exponentiation}
+\end{align*}
+
+\noindent The second approach in Problem 1 gives us the same maximizer but makes the underlying math easier and in practice it can be computed more efficiently.
+
+\exercise
+
+\begin{align*}
+\theta_{MAP} &= \mathrm{argmax}_\theta (\frac{p(\mathcal{D} | \theta ) p(\mathcal{\theta}) }{p(\mathcal{D})} ) \\
+&= \mathrm{argmax}_\theta (p(\mathcal{D} | \theta ) p(\mathcal{\theta}) ) \tag{evidence is constant wrt to $\theta$} \\
+&= \mathrm{argmax}_\theta p(\mathcal{D} | \theta) \tag{uniform prior is constant}\\
+&= \theta_{MLE}
+\end{align*}
+
+\exercise
+
+By problem statement we have likelihood and the conjugate prior $p(\mathcal{D} | \theta) =  \mathrm{Bin}(m | N, \theta)$ resp. $p(\theta | a, b)$. Thus, the posterior must be $p(\theta | a+m, N - m + b)$. Furthermore the posterior mean becomes $\E[\theta | \mathcal{D}] = \frac{a + m}{a + b + N}$.
+
+\noindent \textbf{Goal.}
+Find $\lambda \in [0,1]$ s.t
+
+\begin{align*}
+\frac{a + m}{a + b + N} &= \lambda \frac{a}{a + b} + (1 - \lambda) \frac{m}{m + l} \\
+&= \lambda \frac{a}{a + b} + (1 - \lambda) \frac{m}{N}
+\end{align*}
+
+\noindent \textbf{Solution.} Clearly the equality holds for $\lambda = \frac{a + b}{a + b + N}$.
+
+\exercise
+
+\textbf{Goal.} $\lambda_{MLE}$, $p(\lambda | \mathcal{D})$ and $\lambda_{MAP}$. \\
+\noindent \textbf{Solution.}
+
+\begin{align*}
+log(p(\mathcal{D} | \lambda)) &= \prod_{i=1}^{N} \frac{e^{-\lambda} \lambda^{x_i}}{x_i !} \tag{by i.i.d assumption} \\
+&= \sumf{i=1}{N}{\mathrm{log}(\frac{e^{-\lambda} \lambda^{x_i}}{x_i !})} \\
+&= \sumf{i=1}{N}{-\lambda} + \sumf{i=1}{N}{x_i \mathrm{log}(\lambda)} \tag{remove constants w.r.t $\lambda$} \\
+&= \mathcal{L}(\lambda) \\
+\frac{\partial \mathcal{L}(\lambda)}{\partial \lambda} &= -N + \frac{1}{\lambda} \sumf{i=1}{N}{x_i} = 0 \\
+&\Leftrightarrow \lambda_{MLE} = \frac{\sumf{i=1}{N}{x_i}}{N}
+\end{align*}
+
+\begin{align*}
+p( \lambda | \mathcal{D}) &\varpropto p( \mathcal{D} | \lambda ) \cdot p( \lambda | a, b ) \\
+&= \prodf{i=1}{N}{\frac{1}{x_i!}} e^{-N \lambda} \lambda^{\sumf{i=1}{N}{x_i}} \frac{b^a}{\mathrm{\Gamma(a)}} \lambda^{a-1} e^{-b \lambda} \tag{remove constant w.r.t $\lambda$} \\
+&\varpropto  e^{-\lambda(b + N)} \lambda^{\sumf{i=1}{N}{x_i} + a - 1} \\
+&= \text{Gamma}(\lambda | \sumf{i=1}{N}{x_i} + a, b + N)
+\end{align*}
+
+\begin{align*}
+\mathcal{L(\lambda)} &= \text{log}(p \lambda | \mathcal{D} ) \\ 
+&\varpropto  (\sumf{i=1}{N}{x_i} + a - 1) \text{log}(\lambda) - \lambda(b + N) \\
+\frac{\partial \mathcal{L}(\lambda)}{\partial \lambda} &= 0 \Leftrightarrow \frac{1}{\lambda} \sumf{i=1}{N}{x_i} + a - 1 - (b + N) = 0 \\
+\lambda_{MAP} &= \frac{\sumf{i=1}{N}{x_i} + a - 1}{N + b}
+\end{align*}
+
+
+\end{document}

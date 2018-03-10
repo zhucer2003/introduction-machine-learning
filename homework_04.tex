@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+
+% ------------------------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% ------------------------------------------------------------------------------
+
+\usepackage[margin=.8in,top=1.1in,bottom=1.1in]{geometry} % page layout
+\usepackage{amsmath,amsthm,amssymb,amsfonts} % math things
+\usepackage{graphicx} % include graphics
+\usepackage{fancyhdr} % header customization
+\usepackage{titlesec} % help with section naming
+\usepackage{listings}% display source code
+\usepackage{color}
+
+\usepackage{standalone}
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+% naming sections
+\titleformat{\section}{\bf}{Problem \thesection}{0.5em}{}
+\newcommand{\exercise}{\section{}}
+
+% headers
+\pagestyle{fancy}
+\fancyhf{} % clear all
+\fancyhead[L]{\sffamily\small Machine Learning I --- Homework}
+\fancyhead[R]{\sffamily\small Page \thepage}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\footrulewidth}{0.2pt}
+\markright{\hrulefill\quad}
+
+\newcommand{\hwhead}[4]{
+\begin{center}
+\sffamily\large\bfseries Machine Learning I Worksheet #4
+\vspace{2mm}
+\normalfont
+
+#2\\
+#3\\
+\texttt{#4}
+\end{center}
+\vspace{6mm} \hrule \vspace{4mm}
+}
+
+%%
+\DeclareMathOperator{\E}{\mathbb{E}}
+\newcommand{\intf}[4]{\int_{#1}^{#2} \! #3 \, \mathrm{d}#4}
+\newcommand{\sumf}[3]{\sum_{#1}^{#2} #3}
+\newcommand{\partialf}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\begin{document}
+
+\exercise
+
+See above.
+
+\exercise
+
+\begin{align*}
+E_{weighted}(w) &= \frac{1}{2} \sumf{i=1}{N}{t_i \cdot [w^T \phi(x_i) - y_i]^2} \\
+&= \frac{1}{2}(\Phi w - y)^T T (\Phi w - y) \tag{T = diag($t_i$), i = [1,...,N]} \\
+\end{align*}
+
+\begin{align*}
+\partialf{E_{weighted}(w)}{w} &= \partialf{\frac{1}{2}[ (\Phi w)^T T  \Phi w - (\Phi w)^T T y - y^T T \Phi w + y^T T y]}{w} = 0 \\
+&\Leftrightarrow \partialf{E_{weighted}[ \frac{1}{2} ( w^T \Phi^T  T  \Phi w  - 2 y^T T \Phi w + y^T T y)]}{w} = 0 \\
+&\Leftrightarrow \Phi^T T \Phi w - \Phi^T T y = 0 \tag{by $\partialf{x^T a}{x} =  \partialf{a^T x}{x} = a$ and $\partialf{x^TBx}{x} = (B+ B^T)x$} \\
+w^* &= (\Phi^T T \Phi)^{-1} \Phi^T T y
+\end{align*}
+
+The weighting factors $t_i$ can (i) reduce the variance of the noise on the data by "pulling back" the predictions which are far from their actual label and (ii) artificially create different datapoints from exact copies of the data by using different values for the respective $t_i$ or remove them by setting the respective $t_i$ to zero.
+
+\exercise
+
+Let $\hat{\Phi} \in \R^{(N + M) \times M}$ and $\tilde{\Phi} \in \R^{(N + M) \times M}$ where the last $M$ are \textbf{0}$I_M$ resp. the first $N$ rows are \textbf{0}$I_N$.
+
+\begin{align*}
+E_{LS}(w) &= \frac{1}{2} (\Phi w - y)^T (\Phi w - y) \\
+&= \frac{1}{2}[ (\Phi w)^T \Phi w  - 2 y^T \Phi w + y^T y] \\
+&= \frac{1}{2} [ (\tilde{\Phi} w)^T \tilde{\Phi} w + (\hat{\Phi} w)^T \hat{\Phi} w + y^T y] \\
+&= \frac{1}{2} [ (\tilde{\Phi} w)^T \tilde{\Phi} w + y^T y + \lambda ||w||^2] \\
+&= E_{rigde}(w)
+\end{align*}
+
+Thus the ridge regression estimates can be obtained by deriving the least-squares estimates on the augmented dataset.
+
+\exercise
+
+\begin{align*}
+p(w, \beta | \mathcal{D}) &\propto ( \beta^{\frac{N}{2}} e^{ \frac{-\beta}{2} \sumf{i=1}{N}{(y_i - w^T \phi(x_i))^2}}) \cdot ( e^{\frac{-\beta}{2} [ ( w - m_0 )^T S_0^{-1} ( w - m_0 ) + 2b_0]} \beta^{\frac{M}{2} + a_0 - 1} ) \\
+&= \beta^{\frac{M + N}{2} + a_0 - 1} e^{ [ \frac{-\beta}{2} \sumf{i=1}{N}{(y_i - w^T \phi(x_i))^2} + ( w - m_0 )^T S_0^{-1} ( w - m_0 ) + 2b_0]} \\
+&= \beta^{\frac{M + N}{2} + a_0 - 1} \underbrace{e^{ \frac{-\beta}{2} (y - \Phi w )^T (y - \Phi w) + ( w - m_0 )^T S_0^{-1} ( w - m_0 ) + 2b_0]}}_\text{(1)}
+\end{align*}
+
+\begin{align*}
+&= (y - \Phi w )^T (y - \Phi w) + ( w - m_0 )^T S_0^{-1} ( w - m_0 ) + 2b_0 \\
+&= -2 y^T \Phi w -2m_0^T S_0^{-1}w + w^T \Phi^T \Phi w + w^T S_0^{-1} w + y^T y + m_0^T S_0^{-1} m_0 + 2b_0 \\
+&= -2(y^T \Phi + m_0^T S_0^{-1})w + w^T (\Phi^T \Phi + S_0^{-1}) w + y^T y + m_0^T S_0^{-1} m_0 + 2b_0 \\
+&= -2 (y^T \Phi + m_0^T S_0^{-1})S_N S_N^{-1}w +  w^T S_N^{-1}w + y^T y + m_0^T S_0^{-1} m_0 + 2b_0 \tag{$S_N = (\Phi^T \Phi + S_0^{-1})^{-1}$} \\
+&=  -2 \mu_N^T S_N^{-1} w + \mu_N^T S_N^{-1} \mu_N - \mu_N^T S_N^{-1} \mu_N + w^T S_N^{-1}w + y^T y + m_0^T S_0^{-1} m_0 + 2b_0 \tag{$\mu_N = S_N(S_0^{-1} \mu_0 + \Phi^T y)$} \\
+&= \underbrace{(w - \mu_N)^T S_N^{-1} (w - \mu_N) - \mu^TS_N^{-1}\mu + y^T y + m_0^T S_0^{-1} m_0 + 2b_0}_\text{(2)}
+\end{align*}
+
+\begin{align*}
+p(w, \beta | \mathcal{D}) &\propto \beta^{\frac{M + N}{2} + a_0 - 1} \cdot e^{ \frac{-\beta}{2} (w - \mu_N)^T S_N^{-1} (w - \mu_N) - \mu^T S_N^{-1}\mu + y^T y + m_0^T S_0^{-1} m_0 + 2b_0} \tag{by plugging (2) in (1)} \\
+&= \beta^{ \frac{M}{2} + a_n - 1} \cdot e^{ \frac{-\beta}{2} (w - \mu_N)^T S_N^{-1} (w - \mu_N) + 2 b_n} \tag{by $a_n = \frac{N}{2} + a_0$, $b_n = \frac{1}{2}( - \mu^T S_N^{-1}\mu + y^T y + m_0^T S_0^{-1} m_0) + b_0$} \\
+&\propto \mathcal{N}(w | \mu_n, \beta^{-1} S_n) \cdot \text{Gamma}(\beta | a_n, b_n)
+\end{align*}
+
+
+\end{document}

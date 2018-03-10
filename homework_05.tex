@@ -1,0 +1,149 @@
+    \documentclass[11pt]{article}
+
+% ------------------------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% ------------------------------------------------------------------------------
+
+\usepackage[margin=.8in,top=1.1in,bottom=1.1in]{geometry} % page layout
+\usepackage{amsmath,amsthm,amssymb,amsfonts} % math things
+\usepackage{graphicx} % include graphics
+\usepackage{fancyhdr} % header customization
+\usepackage{titlesec} % help with section naming
+\usepackage{listings}% display source code
+\usepackage{color}
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+% naming sections
+\titleformat{\section}{\bf}{Problem \thesection}{0.5em}{}
+\newcommand{\exercise}{\section{}}
+
+% headers
+\pagestyle{fancy}
+\fancyhf{} % clear all
+\fancyhead[L]{\sffamily\small Machine Learning I --- Homework}
+\fancyhead[R]{\sffamily\small Page \thepage}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\footrulewidth}{0.2pt}
+\markright{\hrulefill\quad}
+
+\newcommand{\hwhead}[4]{
+\begin{center}
+\sffamily\large\bfseries Machine Learning I Worksheet #2
+\vspace{2mm}
+\normalfont
+
+#2\\
+#3\\
+\texttt{#4}
+\end{center}
+\vspace{6mm} \hrule \vspace{4mm}
+}
+
+%%
+\DeclareMathOperator{\E}{\mathbb{E}}
+\newcommand{\intf}[4]{\int_{#1}^{#2} \! #3 \, \mathrm{d}#4}
+\newcommand{\sumf}[3]{\sum_{#1}^{#2} #3}
+\newcommand{\tf}[1]{{#1}^{\intercal}}
+
+\newcommand{\ifelse}[4]{%
+\begingroup
+\begin{cases}
+  {#1} \text{, if {#2}} \\
+  {#3} \text{, otherwise {#4}}
+\end{cases}
+\endgroup
+}
+
+\newcommand{\groupf}[2]{%
+\begingroup
+\begin{cases}
+  {#1}  \\
+  {#2}
+\end{cases}
+\endgroup
+}
+
+\begin{document}
+
+\exercise
+
+Let $$co\mathcal{X} = \{ x: x = \sumf{i}{}{\alpha_i x_i}, \alpha_i \ge 0, \sumf{i}{}{\alpha_i = 1} \}$$ 
+$$co\mathcal{Y} = \{ y: y = \sumf{j}{}{\alpha_j y_j}, \alpha_j \ge 0, \sumf{j}{}{\alpha_j = 1} \}$$
+be two convex hulls for $\mathcal{X} = \{ x_i \}^N_{i=1}$ resp. $\mathcal{Y} = \{ y_j \}^M_{j=1}$.
+
+\noindent $\mathbf{Prove:}$ If the two convex hulls intersect $\Rightarrow$ $\mathcal{X}$ and $\mathcal{Y}$ are not linearly separable.
+
+\noindent \textbf{Solution.}
+
+Proof by contradiction. Assume simultaneously that the two convex hulls intersect and that the two sets are linearly separable. \\
+$co\mathcal{X} \cap co\mathcal{Y} = \{ z: z \in co\mathcal{X} \wedge z \in co\mathcal{Y} \}$, i.e.
+\begin{align*}
+\groupf{z = \sumf{i}{}{\alpha_i x_i}}{z = \sumf{j}{}{\alpha_j y_j}}
+\end{align*}
+
+By second assumption, we have
+\begin{align*}
+\groupf{\tf{w} z + w_0 > 0}{\tf{w} z + w_0 < 0}
+\end{align*}
+
+Putting it together we get
+
+\begin{align*}
+&\groupf{z = \sumf{i}{}{\alpha_i x_i}}{z = \sumf{j}{}{\alpha_j y_j}} \\
+&\groupf{\tf{w} z = \sumf{i}{}{\alpha_i \tf{w} x_i}}{\tf{w} z = \sumf{j}{}{\alpha_j \tf{w} y_j}} \\
+&\groupf{\tf{w} z = \sumf{i}{}{\alpha_i \tf{w} x_i} >  -w_0 \sumf{i}{}{\alpha_i} = -w_0 }{\tf{w} z = \sumf{j}{}{\alpha_j \tf{w} y_j} < -w_0 \sumf{j}{}{\alpha_j} = -w_0} \bot \tag{ Second assumption can not be true, thus the two sets are not linearly separable.}
+\end{align*}
+
+\exercise
+
+First, let the decision boundary $\tf{w}x = 0$ separate the datapoints correctly, i.e. datapoints for which $\tf{w}x > 0$ lie on one side of the hyperplane and those for which $\tf{w}x < 0$ lie on the other side. Thus the logistic regression model is correctly classifying each datapoint with probability $p$ of at least $\frac{1}{2}$ (because $\sigma(\cdot) = \frac{1}{2}$  at zero). Now if $|| w || \rightarrow \infty $, the datapoints are still classified correctly but the probability $p \rightarrow 1$ and  $\sigma(\cdot)$ becomes the step function. Assuming labels $\{ 1, -1 \}$, the binary cross-entropy becomes $\sum_{i=1}^N \ln(1 + \exp(-y_i\mathbf{w}^T\mathbf{x}_i))$. We can clearly see that for correctly classified datapoints the loss is zero. \\ \\
+\noindent $|| w || \rightarrow \infty $ is undesirable because of overfitting but we can prevent it by adding weights regularization to the objective $E(w)$ to penalize large weights, e.g. $ \lambda || w ||^2_2 $.
+
+\exercise
+
+We observe that for class of blue crosses and class of black circles, one of the features is positive and the other negative respectively both features are either positive or negative. Thus a possible basis function $\phi(x_1, x_2) = x_1  \cdot x_2$. Now the two classes become linearly separable, since all blue crosses lie on the real axis left of zero and all black circles lie right of zero. 
+
+\exercise
+
+The decision boundary is by construction defined as $\tf{\textbf{w}} \textbf{x} + w_0 = 0$, where $w = [w_1 \quad w_2]$, $x = \tf{[x_1 \quad x_2]}$, thus we need three parameters (including the bias).
+
+\begin{align*}
+w_1 x_1 + w_2 x_2 + w_0 = 0
+\end{align*}
+
+\begin{align*}
+\groupf{2 w_1 = -w_0}{5 w_2 = -w_0} \\
+w_1 &= \frac{-w_0}{2} \\
+w_2 &= \frac{-w_0}{5}
+\end{align*}
+
+\noindent Possible coefficients must satisfy $\tf{\textbf{w}} \textbf{x} + w_0 = 0$. E.g. for $w_0 = -1$, we get the coefficients $w_1 = \frac{1}{2}, w_2 = \frac{1}{5}$.
+\end{document}
